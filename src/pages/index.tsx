@@ -15,7 +15,8 @@ export default function Home() {
   ]
 
   function clienteSelecionado(cliente: Cliente) {
-    console.log(cliente.nome, "Selecionado")
+    setCliente(cliente)
+    setVisivel('form')
   }
 
   function clienteExcluido(cliente: Cliente) {
@@ -27,7 +28,13 @@ export default function Home() {
     setVisivel('tabela')
   }
 
+  function novoCliente(clientes: Cliente) {
+    setCliente(Cliente.vazio())
+    setVisivel('form')
+  }
+
   const [visivel, setVisivel] = useState<'tabela' | 'form'>('tabela')
+  const [cliente, setCliente] = useState<Cliente>(Cliente.vazio())
 
   return (
     <div className={`
@@ -39,7 +46,7 @@ export default function Home() {
         {visivel === 'tabela' ? (
           <>
             <div className="flex justify-end">
-              <Botao onClick={() => setVisivel('form')} className="mb-4" cor="green">
+              <Botao onClick={novoCliente} className="mb-4" cor="green">
                 Novo Cliente
               </Botao>
             </div>
@@ -51,8 +58,8 @@ export default function Home() {
           </>
         ) : (
           <Formulario 
+            cliente={cliente} 
             clienteMudou={salvarCliente}
-            cliente={clientes[0]} 
             cancelado={() => setVisivel('tabela')}
           />
         )}
