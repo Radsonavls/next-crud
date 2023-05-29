@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Botao from "../components/Botao";
 import Formulario from "../components/Formulario";
 import Layout from "../components/Layout";
@@ -21,6 +22,13 @@ export default function Home() {
     console.log(cliente.nome, "Excluido")
   }
 
+  function salvarCliente(clientes: Cliente) {
+    console.log(clientes)
+    setVisivel('tabela')
+  }
+
+  const [visivel, setVisivel] = useState<'tabela' | 'form'>('tabela')
+
   return (
     <div className={`
       flex justify-center items-center h-screen
@@ -28,15 +36,26 @@ export default function Home() {
       text-white
     `}> 
       <Layout titulo="Cadastro Simples">
-        <div className="flex justify-end">
-          <Botao className="mb-4" cor="green">Novo Cliente</Botao>
-        </div>
-        <Tabela 
-         cliente={clientes} 
-         clienteExcluido={clienteExcluido} 
-         clienteSelecionado={clienteSelecionado} 
-        />
-        <Formulario cliente={clientes[0]} />
+        {visivel === 'tabela' ? (
+          <>
+            <div className="flex justify-end">
+              <Botao onClick={() => setVisivel('form')} className="mb-4" cor="green">
+                Novo Cliente
+              </Botao>
+            </div>
+            <Tabela 
+            cliente={clientes} 
+            clienteExcluido={clienteExcluido} 
+            clienteSelecionado={clienteSelecionado} 
+            />
+          </>
+        ) : (
+          <Formulario 
+            clienteMudou={salvarCliente}
+            cliente={clientes[0]} 
+            cancelado={() => setVisivel('tabela')}
+          />
+        )}
       </Layout>
     </div>
   )
