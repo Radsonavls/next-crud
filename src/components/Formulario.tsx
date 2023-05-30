@@ -1,9 +1,9 @@
 import { useState } from "react";
-import Entrada from "./Entrada";
 import Cliente from "../core/Cliente";
 import Botao from "./Botao";
+import Entrada from "./Entrada";
 
-interface FormularioProps{
+interface FormularioProps {
     cliente: Cliente
     clienteMudou?: (cliente: Cliente) => void
     cancelado?: () => void
@@ -11,34 +11,34 @@ interface FormularioProps{
 
 export default function Formulario(props: FormularioProps) {
     const id = props.cliente?.id
-
-    const [nome, setNome] =useState(props.cliente?.nome ?? '')
-    const [idade, setIdade] =useState(props.cliente?.idade ?? 0)
+    const [nome, setNome] = useState(props.cliente?.nome ?? '')
+    const [idade, setIdade] = useState(props.cliente?.idade ?? 0)
 
     return (
         <div>
             {id ? (
-                <Entrada 
+                <Entrada
                     somenteLeitura
-                    texto="Código" 
-                    valor={id} 
+                    texto="Código"
+                    valor={id}
                     className="mb-5"
                 />
             ) : false}
             <Entrada 
-                texto="Nome" 
+                texto="Nome"
                 valor={nome}
-                valorMudou={setNome} 
+                valorMudou={setNome}
                 className="mb-5"
             />
-            <Entrada 
-                texto="Idade" 
-                tipo="number" 
+            <Entrada
+                texto="Idade"
+                tipo="number"
                 valor={idade}
-                valorMudou={setIdade} 
+                valorMudou={setIdade}
             />
-            <div className="flex justify-end mt-3">
-                <Botao onClick={() => props.clienteMudou?.(new Cliente(nome, idade, id))} cor="blue" className="mr-2">
+            <div className="flex justify-end mt-7">
+                <Botao cor="blue" className="mr-2"
+                    onClick={() => props.clienteMudou?.(new Cliente(nome, +idade, id))}>
                     {id ? 'Alterar' : 'Salvar'}
                 </Botao>
                 <Botao onClick={props.cancelado}>
